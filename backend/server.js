@@ -57,7 +57,7 @@ res.json({ question, answer })
 
   } catch (error) {
     console.error(error.response?.data || error.message)
-    res.status(500).json({ error: 'Something went wrong' })
+    res.status(500).json({ error: 'Something went wrong', error})
   }
 })
 
