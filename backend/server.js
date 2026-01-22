@@ -2,9 +2,9 @@ import express from 'express'
 import { port as PORT } from './config/config.js'
 import cors from 'cors'
 import axios from 'axios'
-import pool from './config/db.js';
+import pool from './config/db.js'
 const corsOptions = {
-  origin: ['http://localhost:5173', 'http://localhost:5174', "https://fullstack-codewave-nine.vercel.app/"]
+  origin: 'https://fullstack-codewave-nine.vercel.app'
 }
 
 const app = express()
@@ -13,51 +13,69 @@ app.use(cors(corsOptions))
 
 app.get('/ask', async (req, res) => {
   const question = req.query.question
-  const gnANswers = ['creator','who made you', 'who develop you', "who create you"]
-  const AIname = ['whats your name', "your name", "what they called you", "who are you"]
+  const gnANswers = [
+    'creator',
+    'who made you',
+    'who develop you',
+    'who create you'
+  ]
+  const AIname = [
+    'whats your name',
+    'your name',
+    'what they called you',
+    'who are you'
+  ]
   if (!question)
     return res.status(400).json({ error: 'Please provide a question' })
 
-
   try {
     const response = await axios.post(
-  'https://openrouter.ai/api/v1/chat/completions',
-  {
-    model: 'nvidia/nemotron-nano-9b-v2:free',
-    messages: [
-      { role: 'system', content: 'You are a helpful assistant.' },
-      { role: 'user', content: question }
-    ]
-  },
-  {
-    headers: {
-      Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-      'Content-Type': 'application/json'
+      'https://openrouter.ai/api/v1/chat/completions',
+      {
+        model: 'nvidia/nemotron-nano-9b-v2:free',
+        messages: [
+          { role: 'system', content: 'You are a helpful assistant.' },
+          { role: 'user', content: question }
+        ]
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    )
+
+    let answer = response.data.choices[0].message.content
+
+    if (gnANswers.some(gn => question.toLowerCase().includes(gn))) {
+      res.json({
+        question,
+        answer: '> the software enigineer named Ibraahim Baashe made me.'
+      })
+      return
     }
-  }
-)
 
-let answer = response.data.choices[0].message.content
+    if (AIname.some(ainame => question.toLowerCase().includes(ainame))) {
+      res.json({
+        question,
+        answer:
+          '> My name is IBSX, and Im a large language model created by software enigineer named Ibraahim Baashe.'
+      })
+      return
+    }
 
-if (gnANswers.some(gn => question.toLowerCase().includes(gn))) {
-  res.json({ question, answer: '> the software enigineer named Ibraahim Baashe made me.' })
-  return
-}
+    answer = answer.replace(/Alibaba Cloud/gi, 'Ibraahim Baashe')
+    answer = answer.replace(/team/gi, 'man')
+    answer = answer.replace(
+      /team of researchers and engineers at a company/gi,
+      'the software enigineer made me'
+    )
 
-if (AIname.some(ainame => question.toLowerCase().includes(ainame))) {
-  res.json({ question, answer: '> My name is IBSX, and Im a large language model created by software enigineer named Ibraahim Baashe.' })
-  return
-}
-
-answer = answer.replace(/Alibaba Cloud/gi, 'Ibraahim Baashe')
-answer = answer.replace(/team/gi, 'man')
-answer = answer.replace(/team of researchers and engineers at a company/gi, 'the software enigineer made me')
-
-res.json({ question, answer })
-
+    res.json({ question, answer })
   } catch (error) {
     console.error(error.response?.data || error.message)
-    res.status(500).json({ error: 'Something went wrong', error})
+    res.status(500).json({ error: 'Something went wrong'})
   }
 })
 
