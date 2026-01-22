@@ -80,6 +80,8 @@ app.get('/ask', async (req, res) => {
     }
 
     answer = answer.replace(/Alibaba Cloud/gi, 'Ibraahim Baashe')
+    answer = answer.replace(/Alibaba Group/gi, 'Ibraahim Baashe')
+    answer = answer.replace(/Qwen/gi, ' IBSX')
     answer = answer.replace(/team/gi, 'man')
     answer = answer.replace(
       /team of researchers and engineers at a company/gi,
