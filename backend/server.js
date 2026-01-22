@@ -3,8 +3,20 @@ import { port as PORT } from './config/config.js'
 import cors from 'cors'
 import axios from 'axios'
 import pool from './config/db.js'
+const allowedOrigins = [
+  'https://fullstack-codewave-nine.vercel.app',
+  'https://fullstack-codewave-7t8bl9mf8-ibraahimgit-ibs-projects.vercel.app'
+]
+
 const corsOptions = {
-  origin: 'https://fullstack-codewave-nine.vercel.app'
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+  methods: ['GET', 'POST']
 }
 
 const app = express()
@@ -75,7 +87,7 @@ app.get('/ask', async (req, res) => {
     res.json({ question, answer })
   } catch (error) {
     console.error(error.response?.data || error.message)
-    res.status(500).json({ error: 'Something went wrong'})
+    res.status(500).json({ error: 'Something went wrong' })
   }
 })
 
