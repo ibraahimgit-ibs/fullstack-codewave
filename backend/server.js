@@ -46,7 +46,7 @@ app.get('/ask', async (req, res) => {
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: 'nvidia/nemotron-nano-9b-v2:free',
+        model: 'qwen/qwen3-next-80b-a3b-instruct:free',
         messages: [
           { role: 'system', content: 'You are a helpful assistant.' },
           { role: 'user', content: question }
