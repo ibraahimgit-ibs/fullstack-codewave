@@ -23,7 +23,7 @@ app.get('/ask', async (req, res) => {
     const response = await axios.post(
   'https://openrouter.ai/api/v1/chat/completions',
   {
-    model: 'mistralai/devstral-2512:free',
+    model: 'nvidia/nemotron-nano-9b-v2:free',
     messages: [
       { role: 'system', content: 'You are a helpful assistant.' },
       { role: 'user', content: question }
