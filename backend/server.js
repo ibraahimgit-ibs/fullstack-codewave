@@ -5,7 +5,8 @@ import axios from 'axios'
 import pool from './config/db.js'
 const allowedOrigins = [
   'https://fullstack-codewave-nine.vercel.app',
-  'https://fullstack-codewave-7t8bl9mf8-ibraahimgit-ibs-projects.vercel.app'
+  'https://fullstack-codewave-7t8bl9mf8-ibraahimgit-ibs-projects.vercel.app',
+  'http://localhost:5000'
 ]
 
 const corsOptions = {
@@ -13,7 +14,7 @@ const corsOptions = {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true)
     } else {
-      callback(new Error('Not allowed by CORS'))
+      callback(new Error('Not allowed by CORS >'))
     }
   },
   methods: ['GET', 'POST']
@@ -44,7 +45,7 @@ app.get('/ask', async (req, res) => {
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
       {
-        model: 'arcee-ai/trinity-mini:free',
+        model: 'nvidia/nemotron-nano-9b-v2:free',
         messages: [
           { role: 'system', content: 'You are a helpful assistant.' },
           { role: 'user', content: question }
@@ -87,7 +88,7 @@ app.get('/ask', async (req, res) => {
     res.json({ question, answer })
   } catch (error) {
     console.error(error.response?.data || error.message)
-    res.status(500).json({ error: 'Something went wrong' })
+    res.status(500).json({ error: 'Something went wrong', error })
   }
 })
 
