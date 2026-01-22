@@ -4,7 +4,7 @@ import cors from 'cors'
 import axios from 'axios'
 import pool from './config/db.js';
 const corsOptions = {
-  origin: ['http://localhost:5173', 'http://localhost:5174', "https://myapp.vercel.app"]
+  origin: ['http://localhost:5173', 'http://localhost:5174', "https://fullstack-codewave-nine.vercel.app/"
 }
 
 const app = express()
