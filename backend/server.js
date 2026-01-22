@@ -6,7 +6,8 @@ import pool from './config/db.js'
 const allowedOrigins = [
   'https://fullstack-codewave-nine.vercel.app',
   'https://fullstack-codewave-7t8bl9mf8-ibraahimgit-ibs-projects.vercel.app',
-  'http://localhost:5000'
+  'http://localhost:5000',
+  "http://localhost:5173"
 ]
 
 const corsOptions = {
@@ -85,7 +86,7 @@ app.get('/ask', async (req, res) => {
       'the software enigineer made me'
     )
 
-    res.json({ question, answer })
+    res.json({ question, answer }, "go away ........")
   } catch (error) {
     console.error(error.response?.data || error.message)
     res.status(500).json({ error: 'Something went wrong', error })
