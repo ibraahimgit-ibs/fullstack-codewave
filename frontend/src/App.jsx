@@ -25,7 +25,7 @@ function App() {
     console.log(question)
 
     try {
-      const respons = await axios.get(`http://localhost:5000/ask?question=${question}`);
+      const respons = await axios.get(`https://fullstack-codewave.onrender.com/ask?question=${question}`);
       console.log(respons.data);
       setDt(prev => [...prev, respons.data]);
       setLoading(false)
